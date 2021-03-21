@@ -1,0 +1,1 @@
+{"portRange":{"max":25566,"min":30000},"masterApiPort":8888,"apiPort":8889,"advertisementIp":"localhost","masterIp":"localhost","master":false}
