@@ -25,7 +25,7 @@ public class BlockNetSlave extends BlockNetCore{
 		log("| ___ \\ |/ _ \\ / __| |/ / . ` |/ _ \\ __|");
 		log("| |_/ / | (_) | (__|   <| |\\  |  __/ |_ ");
 		log("\\____/|_|\\___/ \\___|_|\\_\\_| \\_/\\___|\\__|");
-		log("BlockNet v0.0.1 - By Lickymoo/Buby");
+		log("BlockNet v"+BlockNet.VERSION+" - By Lickymoo/Buby");
 		log("https://github.com/Lickymoo");
 		log("   ");
 		
