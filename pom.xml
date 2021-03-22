@@ -53,8 +53,7 @@
       </plugins>
       <resources>
          <resource>
-            <directory>${basedir}/resources</directory>
-            <filtering>true</filtering>
+            <directory>${basedir}/resource</directory>
             <includes>
                <include>*</include>
             </includes>
@@ -77,18 +76,6 @@
          <groupId>com.google.guava</groupId>
          <artifactId>guava</artifactId>
          <version>30.1.1-jre</version>
-      </dependency>
-      <dependency>
-         <groupId>io.restx</groupId>
-         <artifactId>restx-core</artifactId>
-         <version>0.35.1</version>
-      </dependency>
-      <dependency>
-         <groupId>com.sun.tools</groupId>
-         <artifactId>tools</artifactId>
-         <version>1.6</version>
-         <scope>system</scope>
-         <systemPath>C:\Program Files\Java\jdk1.8.0_251\lib\tools.jar</systemPath>
       </dependency>
       <dependency>
          <groupId>io.javalin</groupId>

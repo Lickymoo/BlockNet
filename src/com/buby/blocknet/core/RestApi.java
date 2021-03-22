@@ -1,6 +1,7 @@
 package com.buby.blocknet.core;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.slf4j.LoggerFactory;
 
 import com.buby.blocknet.BlockNet;
 import com.buby.blocknet.util.model.HeaderModel;
@@ -11,6 +12,7 @@ public abstract class RestApi {
 	protected Javalin app = null;
 	
 	public RestApi() {
+		Javalin.log = LoggerFactory.getLogger(BlockNet.class);
 		app = Javalin.create().start(BlockNet.configProfile.getApiPort());
 	}
 	

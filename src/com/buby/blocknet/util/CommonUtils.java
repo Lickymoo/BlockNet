@@ -1,7 +1,11 @@
 package com.buby.blocknet.util;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -61,13 +65,15 @@ public class CommonUtils {
 		
 		}
 		
+		public static File getOrMkdirs(URI path) {
+			return getOrMkdirs(path.getPath());
+		}
+		
 		public static File getOrMkdirs(String path) {
 			File file = new File(path);
 			try {
 				if(!file.exists()) {
-					log(path + " directory does not exist");
-					log("Creating " + path + " directory...");
-					if(path.contains(".")) {
+					if(path.contains(".") && path.contains("/") ) {
 						new File(path.substring(0, path.lastIndexOf("/"))).mkdirs();
 						file.createNewFile();
 					}else {
@@ -111,6 +117,31 @@ public class CommonUtils {
 	    		e.printStackTrace();
 	    	}
 	    }
+	    
+	    public static File getResourceAsFile(String resourcePath) {
+		    try {
+		        InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(resourcePath);
+		        if (in == null) {
+		            return null;
+		        }
+
+		        File tempFile = File.createTempFile(String.valueOf(in.hashCode()), ".tmp");
+		        tempFile.deleteOnExit();
+
+		        try (FileOutputStream out = new FileOutputStream(tempFile)) {
+		            //copy stream
+		            byte[] buffer = new byte[1024];
+		            int bytesRead;
+		            while ((bytesRead = in.read(buffer)) != -1) {
+		                out.write(buffer, 0, bytesRead);
+		            }
+		        }
+		        return tempFile;
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		        return null;
+		    }
+		}
 	}
 	
 	public static class MathUtil{

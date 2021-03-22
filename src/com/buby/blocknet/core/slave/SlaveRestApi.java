@@ -5,6 +5,7 @@ import static com.buby.blocknet.util.CommonUtils.log;
 import javax.servlet.http.HttpServletResponse;
 
 import com.buby.blocknet.BlockNet;
+import com.buby.blocknet.TemplateConfigurationProfile;
 import com.buby.blocknet.core.RestApi;
 import com.buby.blocknet.model.ServerInstance;
 import com.buby.blocknet.util.model.HeaderModel;
@@ -28,10 +29,18 @@ public class SlaveRestApi extends RestApi{
 				ctx.res.setHeader("port", newInstance.getPort() + "");
 			});
 			
-		app.post("/from_master/has_template", 
+		app.post("/from_master/can_host", 
 			ctx -> {
 				String template = ctx.header("template");
-				ctx.res.setStatus(blockNet.getServerTemplates().contains(template) ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
+				if(!blockNet.getServerTemplates().contains(template)) {
+					ctx.res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+					return;
+				}
+				if(blockNet.getCurrentWeight() + TemplateConfigurationProfile.getConfig(BlockNet.BLOCK_NET_CORE_DIR + "/" + template + "/template-config.json", "template-config.json", TemplateConfigurationProfile.class).getWeight() > BlockNet.configProfile.getMaxWeight()) {
+					ctx.res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+					return;
+				}
+				ctx.res.setStatus(HttpServletResponse.SC_OK);
 			});
 		app.post("/servlet_to_slave/ready",
 			ctx -> {
@@ -41,3 +50,30 @@ public class SlaveRestApi extends RestApi{
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

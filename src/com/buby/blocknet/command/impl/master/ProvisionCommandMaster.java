@@ -26,6 +26,11 @@ public class ProvisionCommandMaster extends CommandExecutor{
 			return CommandResponse.OK;
 		}
 		Pair<Servlet,Integer> provisioned = blockNet.provisionServer(args[1]);
+		if(provisioned == null) {
+			log("All slaves were at maximum capacity");
+			log("Consider modifying server weights or adding more servers to network");
+			return CommandResponse.OK;
+		}
 		log("Sucessfully provisioned template \"" + args[1] + "\" instance on" + provisioned.getLeft().getIp() + ":" + provisioned.getRight());
 		return CommandResponse.OK;
 	}

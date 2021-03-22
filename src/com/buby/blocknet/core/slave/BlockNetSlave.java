@@ -10,17 +10,24 @@ import com.buby.blocknet.core.slave.model.Master;
 import com.buby.blocknet.util.CommonUtils.FileUtil;
 import com.buby.blocknet.util.model.HeaderModel;
 
-import lombok.Getter;
-
 public class BlockNetSlave extends BlockNetCore{
 	
 	public static int maxAttempts = 10;
-	@Getter private Master master;
 	
 	public BlockNetSlave() {
 		this.commandProcessor = new SlaveCommandProcessor();
-		FileUtil.deleteFile(BLOCK_NET_CORE_DIR + "/_temp");
+		FileUtil.deleteFile(BlockNet.BLOCK_NET_CORE_DIR + "/_temp");
 		long deployTime = System.currentTimeMillis();
+
+		log("______ _            _    _   _      _   ");
+		log("| ___ \\ |          | |  | \\ | |    | |  ");
+		log("| |_/ / | ___   ___| | _|  \\| | ___| |_ ");
+		log("| ___ \\ |/ _ \\ / __| |/ / . ` |/ _ \\ __|");
+		log("| |_/ / | (_) | (__|   <| |\\  |  __/ |_ ");
+		log("\\____/|_|\\___/ \\___|_|\\_\\_| \\_/\\___|\\__|");
+		log("BlockNet v0.0.1 - By Lickymoo/Buby");
+		log("https://github.com/Lickymoo");
+		log("   ");
 		
 		log("Starting BlockNet");
 		log("Servlet Mode: Slave");
@@ -40,7 +47,7 @@ public class BlockNetSlave extends BlockNetCore{
 		log("   ");
 		
 		log("Generating _temp folder");
-		FileUtil.getOrMkdirs(BLOCK_NET_CORE_DIR + "/_temp/", true);
+		FileUtil.getOrMkdirs(BlockNet.BLOCK_NET_CORE_DIR + "/_temp/", true);
 		log("   ");
 		
 		log("Registered " + registerServerTemplates() + " template(s)");

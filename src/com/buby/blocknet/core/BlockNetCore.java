@@ -13,6 +13,7 @@ import java.util.UUID;
 
 import com.buby.blocknet.BlockNet;
 import com.buby.blocknet.command.CommandProcessor;
+import com.buby.blocknet.core.slave.model.Master;
 import com.buby.blocknet.model.ServerInstance;
 import com.buby.blocknet.util.CommonUtils.FileUtil;
 import com.google.common.collect.ImmutableSet;
@@ -20,8 +21,6 @@ import com.google.common.collect.ImmutableSet;
 import lombok.Getter;
 
 public abstract class BlockNetCore {
-
-	public static final String BLOCK_NET_CORE_DIR = "BlockNetCore";
 	
 	@Getter protected Set<String> serverTemplates;
 	
@@ -30,10 +29,12 @@ public abstract class BlockNetCore {
 	@Getter protected CommandProcessor commandProcessor;
 	@Getter protected RestApi restApi;
 	@Getter protected boolean headless = false;
+	@Getter protected int currentWeight;
+	@Getter protected Master master;
 	
 	protected int registerServerTemplates() {
-		final File coreDir = FileUtil.getOrMkdirs(BLOCK_NET_CORE_DIR);	
-		final ImmutableSet<String> excludeFileSearch = ImmutableSet.<String>builder().add("_temp").add("blocknet-config.json").add("logs").build();
+		final File coreDir = FileUtil.getOrMkdirs(BlockNet.BLOCK_NET_CORE_DIR);	
+		final ImmutableSet<String> excludeFileSearch = ImmutableSet.<String>builder().add("_temp").add("blocknet-config.json").add("logs").add("resource").build();
 		
 		Set<String> templatePaths = new HashSet<>();
 		
@@ -42,9 +43,9 @@ public abstract class BlockNetCore {
 			if(excludeFileSearch.contains(path) || path.contains(".")) continue;
 			boolean hasJar = false;
 			
-			if(!FileUtil.fileExists(BLOCK_NET_CORE_DIR + "/" + path)) continue;
+			if(!FileUtil.fileExists(BlockNet.BLOCK_NET_CORE_DIR + "/" + path)) continue;
 			
-			for(String nestedPath : FileUtil.getOrMkdirs(BLOCK_NET_CORE_DIR + "/" + path).list()) {
+			for(String nestedPath : FileUtil.getOrMkdirs(BlockNet.BLOCK_NET_CORE_DIR + "/" + path).list()) {
 				if(nestedPath.contains(".jar"))
 					hasJar = true;
 			}
@@ -59,6 +60,7 @@ public abstract class BlockNetCore {
 	}	
 	
 	public void registerNewServerInstance(ServerInstance instance) {
+		currentWeight += instance.getConfigProfile().getWeight();
 		portMappings.put(instance.getInstanceID(), instance.getPort());
 		serverInstances.add(instance);
 	}

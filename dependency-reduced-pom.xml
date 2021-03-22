@@ -10,8 +10,7 @@
     <sourceDirectory>src</sourceDirectory>
     <resources>
       <resource>
-        <filtering>true</filtering>
-        <directory>${basedir}/resources</directory>
+        <directory>${basedir}/resource</directory>
         <includes>
           <include>*</include>
         </includes>
@@ -61,13 +60,6 @@
       <artifactId>lombok</artifactId>
       <version>1.18.18</version>
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.sun.tools</groupId>
-      <artifactId>tools</artifactId>
-      <version>1.6</version>
-      <scope>system</scope>
-      <systemPath>C:\Program Files\Java\jdk1.8.0_251\lib\tools.jar</systemPath>
     </dependency>
   </dependencies>
   <properties>

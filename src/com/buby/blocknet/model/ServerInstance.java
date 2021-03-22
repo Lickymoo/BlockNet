@@ -7,7 +7,6 @@ import java.util.UUID;
 
 import com.buby.blocknet.BlockNet;
 import com.buby.blocknet.TemplateConfigurationProfile;
-import com.buby.blocknet.core.BlockNetCore;
 import com.buby.blocknet.util.CommonUtils.FileUtil;
 
 import lombok.Getter;
@@ -26,29 +25,30 @@ public class ServerInstance {
 		
 		this.instanceID = UUID.randomUUID();
 		this.port = BlockNet.blockNetCore.getAvailablePort();
-		this.configProfile = TemplateConfigurationProfile.getConfigruationProfile(template);
+		this.configProfile = TemplateConfigurationProfile.getConfig(BlockNet.BLOCK_NET_CORE_DIR + "/" + template + "/template-config.json", "template-config.json", TemplateConfigurationProfile.class);
 		
 		log("Copying server files...");
 		File serverFile = FileUtil.copyFolder(
-				FileUtil.getOrMkdirs(BlockNetCore.BLOCK_NET_CORE_DIR + "/" + template), 
-				FileUtil.getOrMkdirs(BlockNetCore.BLOCK_NET_CORE_DIR + "/_temp/" + instanceID));
+				FileUtil.getOrMkdirs(BlockNet.BLOCK_NET_CORE_DIR + "/" + template), 
+				FileUtil.getOrMkdirs(BlockNet.BLOCK_NET_CORE_DIR + "/_temp/" + instanceID));
 		FileUtil.unlockFiles(serverFile);
 		
 		log("Created new server instance");
 		log("    Instance ID: " + instanceID);
 		log("    Port: " + port);
+		log("    Current Weight: " + (BlockNet.blockNetCore.getCurrentWeight()+this.getConfigProfile().getWeight()) + "/" + BlockNet.configProfile.getMaxWeight());
 		
 		FileUtil.saveJSONtoFile("{\"apiport\":"+BlockNet.configProfile.getApiPort()+"}", FileUtil.getOrMkdirs(serverFile.getAbsolutePath() + "/_BlockNetTemp.bn"));
 		
 		//Inject BlockNetServlet
 		FileUtil.getOrMkdirs(serverFile.getAbsolutePath() + "/plugins");
-		FileUtil.copyFolder(FileUtil.getOrMkdirs("resource/BlockNetServlet.jar"), FileUtil.getOrMkdirs(serverFile.getAbsolutePath() + "/plugins/BlockNetServlet.jar"));
+		FileUtil.copyFolder(FileUtil.getResourceAsFile("BlockNetServlet.jar"), FileUtil.getOrMkdirs(serverFile.getAbsolutePath() + "/plugins/BlockNetServlet.jar"));
 		
 		File jar = null;
 		
-		for(String nestedPath : FileUtil.getOrMkdirs(BlockNetCore.BLOCK_NET_CORE_DIR + "/_temp/" + instanceID).list()) {
+		for(String nestedPath : FileUtil.getOrMkdirs(BlockNet.BLOCK_NET_CORE_DIR + "/_temp/" + instanceID).list()) {
 			if(nestedPath.contains(".jar"))
-				jar = FileUtil.getOrMkdirs(BlockNetCore.BLOCK_NET_CORE_DIR + "/_temp/" + instanceID + "/" + nestedPath);
+				jar = FileUtil.getOrMkdirs(BlockNet.BLOCK_NET_CORE_DIR + "/_temp/" + instanceID + "/" + nestedPath);
 		}
 		
 		class ServerRunnable implements Runnable {
@@ -65,7 +65,6 @@ public class ServerInstance {
 					ProcessBuilder builder = new ProcessBuilder(cmd.split(" "));
 					builder.directory(serverFile);
 		        	process = builder.start();
-		        	
 				}catch(Exception e) {
 					e.printStackTrace();
 				}
@@ -73,12 +72,13 @@ public class ServerInstance {
 		}
 		
 		try {
-			Thread thread = new Thread(new ServerRunnable(jar)) ;
+			Thread thread = new Thread(BlockNet.threadGroup, new ServerRunnable(jar), instanceID.toString());
 			thread.run();
+			
 		}catch(Exception e) {
-			if(e.getMessage() == null) return;
+			if(e.getMessage() == null) return;	
 			log("Error starting server. Log file created: /logs/" + instanceID + ".txt");
-			FileUtil.saveJSONtoFile(e.getMessage(), FileUtil.getOrMkdirs(BlockNetCore.BLOCK_NET_CORE_DIR + "/logs/" + instanceID + ".txt"));
+			FileUtil.saveJSONtoFile(e.getMessage(), FileUtil.getOrMkdirs(BlockNet.BLOCK_NET_CORE_DIR + "/logs/" + instanceID + ".txt"));
 		}
 		BlockNet.blockNetCore.registerNewServerInstance(this);
 	}
