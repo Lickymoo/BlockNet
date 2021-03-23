@@ -1,7 +1,6 @@
 package com.buby.blocknet.core.slave;
 
 import java.io.IOException;
-import java.util.Set;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;

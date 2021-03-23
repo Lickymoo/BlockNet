@@ -45,7 +45,10 @@ public class SlaveRestApi extends RestApi{
 		app.post("/servlet_to_slave/ready",
 			ctx -> {
 				String port = ctx.header("port");
-				blockNet.getMaster().post("/from_slave/akwn_ready", new HeaderModel("ip", BlockNet.configProfile.getAdvertisementIp()), new HeaderModel("port", port));
+				String id = ctx.header("id");
+
+				log("Server instance ready: " + id + ":" + port);
+				blockNet.getMaster().post("/from_slave/akwn_ready", new HeaderModel("ip", BlockNet.configProfile.getAdvertisementIp()), new HeaderModel("port", port), new HeaderModel("id", id));
 			});
 	}
 

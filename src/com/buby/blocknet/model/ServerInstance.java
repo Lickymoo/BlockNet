@@ -38,7 +38,7 @@ public class ServerInstance {
 		log("    Port: " + port);
 		log("    Current Weight: " + (BlockNet.blockNetCore.getCurrentWeight()+this.getConfigProfile().getWeight()) + "/" + BlockNet.configProfile.getMaxWeight());
 		
-		FileUtil.saveJSONtoFile("{\"apiport\":"+BlockNet.configProfile.getApiPort()+"}", FileUtil.getOrMkdirs(serverFile.getAbsolutePath() + "/_BlockNetTemp.bn"));
+		FileUtil.saveJSONtoFile("{\"apiport\":"+BlockNet.configProfile.getApiPort()+","+"\"id\":\""+instanceID+"\"}", FileUtil.getOrMkdirs(serverFile.getAbsolutePath() + "/_BlockNetTemp.bn"));
 		
 		//Inject BlockNetServlet
 		FileUtil.getOrMkdirs(serverFile.getAbsolutePath() + "/plugins");

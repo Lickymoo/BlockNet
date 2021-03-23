@@ -34,7 +34,8 @@ public class MasterRestApi extends RestApi{
 			ctx -> {
 				String ip = ctx.header("ip");
 				String port = ctx.header("port");
-				blockNet.instanceReady(ip, port);
+				String id = ctx.header("id");
+				blockNet.instanceReady(ip, port, id);
 			});
 
 		app.post("/from_slave/req_templates_list", 
@@ -65,11 +66,48 @@ public class MasterRestApi extends RestApi{
 					ctx.res.setStatus(HttpServletResponse.SC_OK);
 				});
 		
-		app.post("/servlet_to_slave/ready",
+		app.post("/bungee_to_master/register", 
 			ctx -> {
-				String port = ctx.header("port");
-				blockNet.getMaster().post("/from_slave/akwn_ready", new HeaderModel("ip", BlockNet.configProfile.getAdvertisementIp()), new HeaderModel("port", port));
+				String addr = ctx.req.getLocalAddr();
+				int port = Integer.parseInt(ctx.req.getHeader("port"));
+				blockNet.registerBungee(addr, port);
 			});
+		
+		app.post("/servlet_to_slave/ready",
+				ctx -> {
+					String port = ctx.header("port");
+					String id = ctx.header("id");
+
+					log("Server instance ready: " + id + ":" + port);
+					blockNet.getMaster().post("/from_slave/akwn_ready", new HeaderModel("ip", BlockNet.configProfile.getAdvertisementIp()), new HeaderModel("port", port), new HeaderModel("id", id));
+				});
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

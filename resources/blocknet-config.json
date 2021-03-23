@@ -1,0 +1,14 @@
+{
+	"version":"0.0.1",
+    "portRange":{
+        "max":25566,
+        "min":30000
+    },
+    "masterApiPort":8888,
+    "apiPort":8888,
+    "ftpPort":8890,
+    "advertisementIp":"localhost",
+    "masterIp":"localhost",
+    "master":true,
+    "maxWeight":20
+}

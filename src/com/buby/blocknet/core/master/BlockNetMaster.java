@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.buby.blocknet.BlockNet;
 import com.buby.blocknet.core.BlockNetCore;
+import com.buby.blocknet.core.BungeeCordServlet;
 import com.buby.blocknet.core.Servlet;
 import com.buby.blocknet.core.master.model.Slave;
 import com.buby.blocknet.core.slave.model.Master;
@@ -22,7 +23,8 @@ import lombok.Getter;
 public class BlockNetMaster extends BlockNetCore{
 	
 	@Getter private Set<Slave> activeSlaves = new HashSet<>();
-
+	@Getter private Servlet bungeeCord;
+	
 	public BlockNetMaster() {
 		this.commandProcessor = new MasterCommandProcessor();
 		FileUtil.deleteFile(BlockNet.BLOCK_NET_CORE_DIR + "/_temp");
@@ -106,8 +108,14 @@ public class BlockNetMaster extends BlockNetCore{
 		log("Slave " + slave.getIp() + ":" + slave.getPort() + " registered.");
 	}
 	
-	public void instanceReady(String ip, String port) {
+	public void instanceReady(String ip, String port, String id) {
 		log("Server instance ready: " + ip + ":" + port);
+		this.bungeeCord.post("/master_to_bungee/register_server", new HeaderModel("ip", ip), new HeaderModel("port", port), new HeaderModel("id", id));
+	}
+	
+	public void registerBungee(String addr, int port) {
+		this.bungeeCord = new BungeeCordServlet(addr, port);
+		log("Bungeecord proxy manager connected");
 	}
 	
 }

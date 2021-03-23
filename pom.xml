@@ -53,7 +53,7 @@
         </plugins>
         <resources>
             <resource>
-                <directory>${basedir}/resource</directory>
+                <directory>${basedir}/resources</directory>
                 <includes>
                     <include>*</include>
                 </includes>
