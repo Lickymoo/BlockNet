@@ -2,6 +2,8 @@ package com.buby.blocknet.core.slave;
 
 import static com.buby.blocknet.util.CommonUtils.log;
 
+import java.util.UUID;
+
 import javax.servlet.http.HttpServletResponse;
 
 import com.buby.blocknet.BlockNet;
@@ -25,6 +27,7 @@ public class SlaveRestApi extends RestApi{
 			ctx -> {
 				String template = ctx.header("template");
 				ServerInstance newInstance = new ServerInstance(template);
+				newInstance.setInstanceID(UUID.fromString(ctx.req.getHeader("id")));
 				log("provisioning \"" + template +"\" server");
 				ctx.res.setHeader("port", newInstance.getPort() + "");
 			});
@@ -47,7 +50,6 @@ public class SlaveRestApi extends RestApi{
 				String port = ctx.header("port");
 				String id = ctx.header("id");
 
-				log("Server instance ready: " + id + ":" + port);
 				blockNet.getMaster().post("/from_slave/akwn_ready", new HeaderModel("ip", BlockNet.configProfile.getAdvertisementIp()), new HeaderModel("port", port), new HeaderModel("id", id));
 			});
 	}

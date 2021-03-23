@@ -2,11 +2,14 @@ package com.buby.blocknet.core.master;
 
 import static com.buby.blocknet.util.CommonUtils.log;
 
+import java.util.UUID;
+
 import javax.servlet.http.HttpServletResponse;
 
 import com.buby.blocknet.BlockNet;
 import com.buby.blocknet.TemplateConfigurationProfile;
 import com.buby.blocknet.core.RestApi;
+import com.buby.blocknet.core.master.model.ProvisionedServerModel;
 import com.buby.blocknet.core.master.model.Slave;
 import com.buby.blocknet.model.ServerInstance;
 import com.buby.blocknet.util.model.HeaderModel;
@@ -48,8 +51,10 @@ public class MasterRestApi extends RestApi{
 				ctx -> {
 					String template = ctx.header("template");
 					ServerInstance newInstance = new ServerInstance(template);
+					newInstance.setInstanceID(UUID.fromString(ctx.req.getHeader("id")));
 					log("provisioning \"" + template +"\" server");
 					ctx.res.setHeader("port", newInstance.getPort() + "");
+					
 				});
 				
 		app.post("/from_master/can_host", 
@@ -78,9 +83,22 @@ public class MasterRestApi extends RestApi{
 					String port = ctx.header("port");
 					String id = ctx.header("id");
 
-					log("Server instance ready: " + id + ":" + port);
 					blockNet.getMaster().post("/from_slave/akwn_ready", new HeaderModel("ip", BlockNet.configProfile.getAdvertisementIp()), new HeaderModel("port", port), new HeaderModel("id", id));
 				});
+		
+		app.post("/api/provision", 
+			ctx -> {
+				String template = ctx.req.getHeader("template");
+				log("API REQ: Provision " + template);
+				if(!blockNet.getServerTemplates().contains(template)) {
+					ctx.res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+					return;
+				}
+				ProvisionedServerModel servlet = blockNet.provisionServer(template);
+				ctx.res.setHeader("ip", servlet.getServlet().getIp());
+				ctx.res.setHeader("port", servlet.getPort() + "");
+				ctx.res.setHeader("id", servlet.getUuid().toString());
+			});
 	}
 
 }

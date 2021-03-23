@@ -13,6 +13,7 @@ C:\Users\Mitchell\eclipse-workspace\BlockNet\src\com\buby\blocknet\util\model\Mi
 C:\Users\Mitchell\eclipse-workspace\BlockNet\src\com\buby\blocknet\core\BlockNetCore.java
 C:\Users\Mitchell\eclipse-workspace\BlockNet\src\com\buby\blocknet\core\master\model\Slave.java
 C:\Users\Mitchell\eclipse-workspace\BlockNet\src\com\buby\blocknet\core\slave\SlaveCommandProcessor.java
+C:\Users\Mitchell\eclipse-workspace\BlockNet\src\com\buby\blocknet\core\master\model\ProvisionedServerModel.java
 C:\Users\Mitchell\eclipse-workspace\BlockNet\src\com\buby\blocknet\command\CommandResponse.java
 C:\Users\Mitchell\eclipse-workspace\BlockNet\src\com\buby\blocknet\core\RestApi.java
 C:\Users\Mitchell\eclipse-workspace\BlockNet\src\com\buby\blocknet\core\slave\SlaveRestApi.java

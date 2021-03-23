@@ -10,9 +10,10 @@ import com.buby.blocknet.TemplateConfigurationProfile;
 import com.buby.blocknet.util.CommonUtils.FileUtil;
 
 import lombok.Getter;
+import lombok.Setter;
 
 public class ServerInstance {
-	@Getter private UUID instanceID;
+	@Getter @Setter private UUID instanceID;
 	@Getter private int port;
 	@Getter private TemplateConfigurationProfile configProfile;
 	@Getter private Process process;

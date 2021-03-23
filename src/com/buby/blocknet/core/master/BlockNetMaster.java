@@ -4,6 +4,7 @@ import static com.buby.blocknet.util.CommonUtils.log;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -11,12 +12,12 @@ import com.buby.blocknet.BlockNet;
 import com.buby.blocknet.core.BlockNetCore;
 import com.buby.blocknet.core.BungeeCordServlet;
 import com.buby.blocknet.core.Servlet;
+import com.buby.blocknet.core.master.model.ProvisionedServerModel;
 import com.buby.blocknet.core.master.model.Slave;
 import com.buby.blocknet.core.slave.model.Master;
 import com.buby.blocknet.util.CommonUtils.FileUtil;
 import com.buby.blocknet.util.CommonUtils.MathUtil;
 import com.buby.blocknet.util.model.HeaderModel;
-import com.buby.blocknet.util.model.Pair;
 
 import lombok.Getter;
 
@@ -73,7 +74,7 @@ public class BlockNetMaster extends BlockNetCore{
 	/* Provision a server on either master or slave
 	 * Returns servlet & port of server
 	 */
-	public Pair<Servlet, Integer> provisionServer(String template) {
+	public ProvisionedServerModel provisionServer(String template) {
 		/*Provision server on slave, or if out of bounds on master*/
 		try {
 			Slave[] slaveArray = activeSlaves.toArray(new Slave[activeSlaves.size()]);
@@ -93,13 +94,15 @@ public class BlockNetMaster extends BlockNetCore{
 				return provisionServer(template);
 			}
 			
-			int port = Integer.parseInt(slave.postComplex("/from_master/provision", new HeaderModel("template", template)).getFirstHeader("port").getValue() );
-			return Pair.of(slave, port);
+			UUID id = UUID.randomUUID();
+			int port = Integer.parseInt(slave.postComplex("/from_master/provision", new HeaderModel("template", template), new HeaderModel("id", id.toString())).getFirstHeader("port").getValue() );
+			return new ProvisionedServerModel(slave, port, id);
 		}catch(StackOverflowError e) {
 			return null;
 		}catch(Exception e) {
-			int port = Integer.parseInt(this.getMaster().postComplex("/from_master/provision", new HeaderModel("template", template)).getFirstHeader("port").getValue() );
-			return Pair.of(this.getMaster(), port);
+			UUID id = UUID.randomUUID();
+			int port = Integer.parseInt(this.getMaster().postComplex("/from_master/provision", new HeaderModel("template", template), new HeaderModel("id", id.toString()) ).getFirstHeader("port").getValue());
+			return new ProvisionedServerModel(this.getMaster(), port, id);
 		}
 	}
 	
