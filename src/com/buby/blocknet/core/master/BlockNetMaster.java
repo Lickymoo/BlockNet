@@ -57,6 +57,10 @@ public class BlockNetMaster extends BlockNetCore{
 		this.restApi = new MasterRestApi();
 		log("   ");
 		
+		log("Initialising FTP server");
+		this.ftpServlet = new FtpServletMaster(this);
+		log("   ");
+		
 		//Master is it's own slave
 		this.master = new Master(BlockNet.configProfile.getAdvertisementIp(), BlockNet.configProfile.getApiPort());
 		

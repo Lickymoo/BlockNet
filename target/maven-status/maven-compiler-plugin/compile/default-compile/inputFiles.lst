@@ -1,7 +1,9 @@
 C:\Users\Mitchell\eclipse-workspace\BlockNet\src\com\buby\blocknet\command\impl\ExitCommand.java
+C:\Users\Mitchell\eclipse-workspace\BlockNet\src\com\buby\blocknet\core\master\FtpServletMaster.java
 C:\Users\Mitchell\eclipse-workspace\BlockNet\src\com\buby\blocknet\core\master\BlockNetMaster.java
 C:\Users\Mitchell\eclipse-workspace\BlockNet\src\com\buby\blocknet\TemplateConfigurationProfile.java
 C:\Users\Mitchell\eclipse-workspace\BlockNet\src\com\buby\blocknet\command\impl\master\ProvisionCommandMaster.java
+C:\Users\Mitchell\eclipse-workspace\BlockNet\src\com\buby\blocknet\core\FtpServlet.java
 C:\Users\Mitchell\eclipse-workspace\BlockNet\src\com\buby\blocknet\model\ServerInstance.java
 C:\Users\Mitchell\eclipse-workspace\BlockNet\src\com\buby\blocknet\util\CommonUtils.java
 C:\Users\Mitchell\eclipse-workspace\BlockNet\src\com\buby\blocknet\core\slave\model\Master.java
@@ -13,6 +15,7 @@ C:\Users\Mitchell\eclipse-workspace\BlockNet\src\com\buby\blocknet\core\slave\Sl
 C:\Users\Mitchell\eclipse-workspace\BlockNet\src\com\buby\blocknet\command\CommandResponse.java
 C:\Users\Mitchell\eclipse-workspace\BlockNet\src\com\buby\blocknet\core\RestApi.java
 C:\Users\Mitchell\eclipse-workspace\BlockNet\src\com\buby\blocknet\core\slave\SlaveRestApi.java
+C:\Users\Mitchell\eclipse-workspace\BlockNet\src\com\buby\blocknet\core\slave\FtpServletSlave.java
 C:\Users\Mitchell\eclipse-workspace\BlockNet\src\com\buby\blocknet\command\CommandProcessor.java
 C:\Users\Mitchell\eclipse-workspace\BlockNet\src\com\buby\blocknet\command\CommandExecutor.java
 C:\Users\Mitchell\eclipse-workspace\BlockNet\src\com\buby\blocknet\ConfigurationProfile.java

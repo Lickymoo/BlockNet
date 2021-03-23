@@ -28,13 +28,16 @@ public abstract class BlockNetCore {
 	@Getter protected HashMap<UUID, Integer> portMappings = new HashMap<>();
 	@Getter protected CommandProcessor commandProcessor;
 	@Getter protected RestApi restApi;
+	@Getter protected FtpServlet ftpServlet;
 	@Getter protected boolean headless = false;
 	@Getter protected int currentWeight;
 	@Getter protected Master master;
 	
 	protected int registerServerTemplates() {
 		final File coreDir = FileUtil.getOrMkdirs(BlockNet.BLOCK_NET_CORE_DIR);	
-		final ImmutableSet<String> excludeFileSearch = ImmutableSet.<String>builder().add("_temp").add("blocknet-config.json").add("logs").add("resource").build();
+		final ImmutableSet<String> excludeFileSearch = ImmutableSet.<String>builder().add("_temp").add("blocknet-config.json").add("logs")
+				.add("resource").add(".settings").add("bin").add("target").add("resource")
+				.add("src").build();
 		
 		Set<String> templatePaths = new HashSet<>();
 		

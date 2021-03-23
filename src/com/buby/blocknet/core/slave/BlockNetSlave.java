@@ -50,11 +50,12 @@ public class BlockNetSlave extends BlockNetCore{
 		FileUtil.getOrMkdirs(BlockNet.BLOCK_NET_CORE_DIR + "/_temp/", true);
 		log("   ");
 		
-		log("Registered " + registerServerTemplates() + " template(s)");
-		log("   ");
-		
 		log("Initialising REST API");
 		this.restApi = new SlaveRestApi();
+		log("   ");
+		
+		log("Initialising FTP client");
+		this.ftpServlet = new FtpServletSlave(this);
 		log("   ");
 		
 		log("Connecting to master");
@@ -73,6 +74,15 @@ public class BlockNetSlave extends BlockNetCore{
 			this.disable();
 			return;
 		}
+		log("   ");
+		
+		log("Connecting to master FTP server");
+		FtpServletSlave slaveFtpServlet = (FtpServletSlave)this.ftpServlet;
+		log("Downloading templates from master server, this may take a bit...");
+		slaveFtpServlet.downloadTemplates();
+		log("   ");
+		
+		log("Registered " + registerServerTemplates() + " template(s)");
 		log("   ");
 		
 		log("Done! (" + ((System.currentTimeMillis() - deployTime)) + "ms)");

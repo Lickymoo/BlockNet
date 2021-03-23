@@ -19,9 +19,11 @@ public class BlockNet {
 	public static void main(String args[]) {
 		configProfile = BlockConfigurationProfile.getConfig("blocknet-config.json", "blocknet-config.json", BlockConfigurationProfile.class);
 		blockNetCore = configProfile.isMaster() ? new BlockNetMaster() : new BlockNetSlave();
+		
 		if(!configProfile.getVersion().equals(VERSION))
 			log("Your config is out of date");
 		threadGroup = new ThreadGroup("BlockNet");   
+		
 		if(!enabled) return;
 		blockNetCore.getRestApi().body();
 		blockNetCore.commandPrompt();

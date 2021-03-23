@@ -1,7 +1,5 @@
 package com.buby.blocknet.core;
 
-import java.util.logging.LogManager;
-
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.slf4j.LoggerFactory;
 

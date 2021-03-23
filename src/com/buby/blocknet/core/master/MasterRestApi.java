@@ -10,6 +10,7 @@ import com.buby.blocknet.core.RestApi;
 import com.buby.blocknet.core.master.model.Slave;
 import com.buby.blocknet.model.ServerInstance;
 import com.buby.blocknet.util.model.HeaderModel;
+import com.google.gson.Gson;
 
 public class MasterRestApi extends RestApi{
 
@@ -35,6 +36,12 @@ public class MasterRestApi extends RestApi{
 				String port = ctx.header("port");
 				blockNet.instanceReady(ip, port);
 			});
+
+		app.post("/from_slave/req_templates_list", 
+			ctx -> {
+				Gson gson = new Gson();
+				ctx.res.addHeader("templates", gson.toJson(blockNet.getServerTemplates().toArray()));
+			});
 		
 		app.post("/from_master/provision", 
 				ctx -> {
@@ -57,6 +64,7 @@ public class MasterRestApi extends RestApi{
 					}
 					ctx.res.setStatus(HttpServletResponse.SC_OK);
 				});
+		
 		app.post("/servlet_to_slave/ready",
 			ctx -> {
 				String port = ctx.header("port");

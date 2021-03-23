@@ -6,6 +6,7 @@
     },
     "masterApiPort":8888,
     "apiPort":8888,
+    "ftpPort":8890,
     "advertisementIp":"localhost",
     "masterIp":"localhost",
     "master":true,
